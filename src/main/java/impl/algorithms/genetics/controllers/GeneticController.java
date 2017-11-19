@@ -1,16 +1,25 @@
 package impl.algorithms.genetics.controllers;
 
 import impl.algorithms.genetics.entities.NetworkAllele;
+import impl.algorithms.genetics.operators.ChromosomeFactory;
+import impl.algorithms.genetics.operators.alterer.factories.FitnessFactory;
+import impl.algorithms.genetics.operators.alterer.fitness.GeneticFitness;
+import impl.algorithms.genetics.operators.alterer.types.FitnessTypes;
 import impl.controllers.BusinessController;
 import impl.controllers.NetworkController;
 import impl.entities.*;
 import org.jenetics.AnyGene;
 import org.jenetics.Chromosome;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
 
 @Controller
 public class GeneticController {
@@ -23,6 +32,27 @@ public class GeneticController {
         Network updatedNetwork = networkController.createNetwork(network.getSize(), network.getCities());
         networkController.addRoutes(updatedNetwork, routes);
         return updatedNetwork;
+    }
+
+    public Engine.Builder compileBuilder(Network network, Company company, FitnessTypes fitness) {
+        GeneticFitness fitnessFunction = FitnessFactory.getFitness(fitness, network, company);
+        return Engine.builder(fitnessFunction::eval, new ChromosomeFactory(network, company));
+    }
+
+    public Object evolve(Engine engine, Predicate limit, Collector collector) {
+        return engine
+                .stream()
+                .limit(limit)
+                .collect(collector);
+    }
+
+    public EvolutionResult<AnyGene<NetworkAllele>, Double> iterate(Engine engine, int generation) {
+        EvolutionResult<AnyGene<NetworkAllele>, Double> result = null;
+        Iterator<EvolutionResult<AnyGene<NetworkAllele>, Double>> iterator = engine.iterator();
+        for (int i = 0; i < generation; i++) {
+            result = iterator.next();
+        }
+        return result;
     }
 
     public List<Route> getListOfRoutes(Network network, Company company, Chromosome<AnyGene<NetworkAllele>> chromosome) {

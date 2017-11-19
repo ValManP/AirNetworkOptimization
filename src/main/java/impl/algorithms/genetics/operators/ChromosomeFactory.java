@@ -2,6 +2,7 @@ package impl.algorithms.genetics.operators;
 
 import impl.algorithms.genetics.entities.NetworkAllele;
 import impl.entities.Company;
+import impl.entities.Network;
 import org.jenetics.AnyChromosome;
 import org.jenetics.AnyGene;
 import org.jenetics.Genotype;
@@ -11,8 +12,8 @@ public class ChromosomeFactory implements Factory<Genotype<AnyGene<NetworkAllele
     private final NetworkSupplier supplier;
     private final Company company;
 
-    public ChromosomeFactory(NetworkSupplier supplier, Company company) {
-        this.supplier = supplier;
+    public ChromosomeFactory(Network network, Company company) {
+        this.supplier = new NetworkSupplier(network);
         this.company = company;
     }
 

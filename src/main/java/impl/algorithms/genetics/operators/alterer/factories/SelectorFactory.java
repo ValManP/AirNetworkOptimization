@@ -4,7 +4,7 @@ import impl.algorithms.genetics.operators.alterer.types.SelectorTypes;
 import org.jenetics.*;
 
 public class SelectorFactory {
-    public Selector createSelector(SelectorTypes selectorTypes) {
+    public static Selector createSelector(SelectorTypes selectorTypes) {
         Selector result = null;
         double selectionVariable = selectorTypes.getSelectionVariable();
 
