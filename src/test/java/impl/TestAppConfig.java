@@ -1,5 +1,6 @@
 package impl;
 
+import impl.controllers.BusinessController;
 import impl.controllers.MatrixController;
 import impl.controllers.NetworkController;
 import org.springframework.context.annotation.Bean;
@@ -15,5 +16,10 @@ public class TestAppConfig {
     @Bean
     public MatrixController matrixController() {
         return new MatrixController();
+    }
+
+    @Bean
+    public BusinessController businessController() {
+        return new BusinessController();
     }
 }

@@ -5,6 +5,7 @@ import impl.entities.City;
 import impl.entities.Network;
 import impl.entities.Route;
 import impl.tools.CommonTools;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 
 import java.util.Arrays;
@@ -12,7 +13,10 @@ import java.util.List;
 
 @Controller
 public class NetworkController {
+    private static final Logger LOGGER = Logger.getLogger(NetworkController.class);
+
     public Network createNetwork(int size, List<City> cityList) {
+        LOGGER.debug("createNetwork started");
         if (!CommonTools.isEqual(size, cityList.size())) {
             throw new IllegalArgumentException("Size of lists should be equal to matrix size");
         }
@@ -36,11 +40,10 @@ public class NetworkController {
         int indexA = cityList.indexOf(route.getCityA());
         int indexB = cityList.indexOf(route.getCityB());
         double power = route.getAircraft().getPower();
-        network.getAdjacencyMatrix()
-                .set(indexA, indexB, power);
+
+        network.getAdjacencyMatrix().set(indexA, indexB, power);
         if (isDuplex) {
-            network.getAdjacencyMatrix()
-                    .set(indexB, indexA, power);
+            network.getAdjacencyMatrix().set(indexB, indexA, power);
         }
     }
 
