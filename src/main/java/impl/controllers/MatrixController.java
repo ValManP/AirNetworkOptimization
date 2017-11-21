@@ -3,11 +3,9 @@ package impl.controllers;
 import Jama.Matrix;
 import impl.entities.Network;
 import impl.entities.Route;
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@Controller
 public class MatrixController {
     public double calculateCost(List<Route> routes) {
         double cost = 0;

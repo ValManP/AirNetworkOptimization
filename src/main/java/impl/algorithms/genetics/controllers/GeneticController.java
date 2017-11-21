@@ -8,12 +8,11 @@ import impl.algorithms.genetics.operators.alterer.types.FitnessTypes;
 import impl.controllers.BusinessController;
 import impl.controllers.NetworkController;
 import impl.entities.*;
+import org.apache.log4j.Logger;
 import org.jenetics.AnyGene;
 import org.jenetics.Chromosome;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,12 +20,16 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 
-@Controller
 public class GeneticController {
-    @Autowired
+    private static final Logger LOGGER = Logger.getLogger(GeneticController.class);
+
     private NetworkController networkController;
-    @Autowired
     private BusinessController businessController;
+
+    public GeneticController() {
+        this.businessController = new BusinessController();
+        this.networkController = new NetworkController();
+    }
 
     public Network getUpdatedNetwork(Network network, List<Route> routes) {
         Network updatedNetwork = networkController.createNetwork(network.getSize(), network.getCities());
@@ -62,11 +65,14 @@ public class GeneticController {
             AnyGene<NetworkAllele> gene = chromosome.getGene(index);
             NetworkAllele allele = gene.getAllele();
 
-            Aircraft aircraft = company.getAircraft().get(index);
-            City cityA = network.getCities().get(findRow(allele.getPosition(), network.getSize()));
-            City cityB = network.getCities().get(findCol(allele.getPosition(), network.getSize()));
+            if (allele.isUsed()) {
+                Aircraft aircraft = company.getAircraft().get(index);
+                LOGGER.debug("size = " + network.getSize() + " pos = " + allele.getPosition());
+                City cityA = network.getCities().get(findRow(allele.getPosition(), network.getSize()));
+                City cityB = network.getCities().get(findCol(allele.getPosition(), network.getSize()));
 
-            routes.add(businessController.createRoute(cityA, cityB, aircraft));
+                routes.add(businessController.createRoute(cityA, cityB, aircraft));
+            }
         }
 
         return routes;
@@ -90,6 +96,6 @@ public class GeneticController {
             temp += i + 2;
         }
 
-        return temp / size;
+        return temp % size;
     }
 }

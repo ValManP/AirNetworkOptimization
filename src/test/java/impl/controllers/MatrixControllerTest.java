@@ -1,26 +1,24 @@
 package impl.controllers;
 
-import impl.TestAppConfig;
 import impl.entities.*;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestAppConfig.class})
 public class MatrixControllerTest {
-    @Autowired
     private MatrixController matrixController;
-    @Autowired
     private NetworkController networkController;
-    @Autowired
     private BusinessController businessController;
+
+    @Before
+    public void setUp() throws Exception {
+        this.matrixController = new MatrixController();
+        this.networkController = new NetworkController();
+        this.businessController = new BusinessController();
+    }
 
     @Test
     public void test_CalculateCost() throws Exception {

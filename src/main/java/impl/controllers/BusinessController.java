@@ -4,9 +4,7 @@ import impl.entities.Aircraft;
 import impl.entities.City;
 import impl.entities.Company;
 import impl.entities.Route;
-import org.springframework.stereotype.Controller;
 
-@Controller
 public class BusinessController {
     public Company createCompany() {
         return new Company();

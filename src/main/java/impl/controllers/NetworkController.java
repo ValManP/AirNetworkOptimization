@@ -6,17 +6,16 @@ import impl.entities.Network;
 import impl.entities.Route;
 import impl.tools.CommonTools;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Controller
+@Service
 public class NetworkController {
     private static final Logger LOGGER = Logger.getLogger(NetworkController.class);
 
     public Network createNetwork(int size, List<City> cityList) {
-        LOGGER.debug("createNetwork started");
         if (!CommonTools.isEqual(size, cityList.size())) {
             throw new IllegalArgumentException("Size of lists should be equal to matrix size");
         }

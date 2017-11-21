@@ -25,7 +25,7 @@ public class NetworkSupplier implements Supplier<NetworkAllele> {
 
         double deviceProbability = random.nextDouble();
         if (deviceProbability < USING_PROBABILITY) {
-            aircraftPosition = random.nextInt(positionCount);
+            aircraftPosition = random.nextInt(positionCount) + 1;
             isUsed = true;
         }
 

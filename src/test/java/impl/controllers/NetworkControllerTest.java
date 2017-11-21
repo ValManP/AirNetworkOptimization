@@ -1,26 +1,24 @@
 package impl.controllers;
 
-import impl.TestAppConfig;
 import impl.entities.Aircraft;
 import impl.entities.City;
 import impl.entities.Network;
 import impl.entities.Route;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestAppConfig.class})
 public class NetworkControllerTest {
-    @Autowired
     private NetworkController networkController;
+
+    @Before
+    public void setUp() throws Exception {
+        this.networkController = new NetworkController();
+    }
 
     @Test
     public void test_CreateNetwork() throws Exception {

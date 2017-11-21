@@ -8,7 +8,6 @@ import impl.entities.Network;
 import impl.entities.Route;
 import org.jenetics.AnyGene;
 import org.jenetics.Genotype;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -19,14 +18,15 @@ public abstract class GeneticFitness {
     private Network network;
     private Company company;
 
-    @Autowired
     private MatrixController matrixController;
-    @Autowired
     private GeneticController geneticController;
 
     GeneticFitness(Network network, Company company) {
         this.network = network;
         this.company = company;
+
+        this.geneticController = new GeneticController();
+        this.matrixController = new MatrixController();
     }
 
     public Double eval(final Genotype<AnyGene<NetworkAllele>> gt) {
