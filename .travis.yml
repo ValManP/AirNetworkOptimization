@@ -1,0 +1,14 @@
+language: java
+jdk: oraclejdk8
+install: true
+cache:
+  directories:
+  - $HOME/.m2
+script:
+  - mvn clean install
+  - mvn cobertura:cobertura
+  - mvn checkstyle:check
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+notifications:
+  email: false
