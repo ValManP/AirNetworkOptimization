@@ -7,7 +7,6 @@ cache:
 script:
   - mvn clean install
   - mvn cobertura:cobertura
-  - mvn checkstyle:check
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 notifications:
