@@ -28,7 +28,7 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
     private final static MatrixController matrixController = new MatrixController();
     
     private final static int radius = 5;
-    private final static int diff = 27;
+    private final static int diff = 10;
     
     private DesktopFrame desktopPanel;
     private Company company;
@@ -83,7 +83,7 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
                 if (matrix.get(i, j) > 0) {
                     City cityA = cities.get(i);
                     City cityB = cities.get(j);
-                    g2d.setColor(Color.white);
+                    g2d.setColor(Color.red);
                     g2d.drawLine((int) cityA.getX(), (int) cityA.getY(), (int) cityB.getX(), (int) cityB.getY());
                 }
             }
@@ -96,20 +96,6 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
             City city = businessController.createCity("Some name", e.getX(), e.getY());
             networkController.addCity(network, city);
             desktopPanel.log("Actual Estrada Coeff = " + matrixController.calculateEstradaCoeff(network));
-        } else if (desktopPanel.isAddRouteMode()) {
-            if (firstCoordinate == null) {
-                firstCoordinate = new Point(e.getX(), e.getY());
-            } else {
-                Aircraft aircraft = businessController.createAircraft(company, 100, 1);
-                City cityA = getClosestCity(firstCoordinate.x, firstCoordinate.y);
-                City cityB = getClosestCity(e.getX(), e.getY());
-                if (cityA != null & cityB != null & cityA != cityB) {
-                    Route route = businessController.createRoute(cityA, cityB, aircraft);
-                    networkController.addRoute(network, route, true);
-                    firstCoordinate = null;
-                    desktopPanel.log("Actual Estrada Coeff = " + matrixController.calculateEstradaCoeff(network));
-                }
-            }
         }
         repaint();
     }
@@ -117,8 +103,8 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
     private City getClosestCity(int x, int y) {
         List<City> cities = network.getCities();
         for (City city: cities) {
-            int diffX = (int) city.getX() - x;
-            int diffY = (int) city.getY() - y;
+            int diffX = Math.abs((int) city.getX() - x);
+            int diffY = Math.abs((int) city.getY() - y);
             if (diffX < diff & diffY < diff) {
                 return city;
             }
@@ -128,11 +114,27 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
 
     // Unused Mouse Listener Methods
     @Override
-    public void mousePressed( MouseEvent e ) {}
+    public void mousePressed( MouseEvent e ) {
+        if (desktopPanel.isAddRouteMode()) {
+            firstCoordinate = new Point(e.getX(), e.getY());
+        }
+    }
     @Override
     public void mouseMoved( MouseEvent e ) {}
     @Override
-    public void mouseReleased( MouseEvent e ) {}
+    public void mouseReleased( MouseEvent e ) {
+        if (desktopPanel.isAddRouteMode()) {
+            Aircraft aircraft = businessController.createAircraft(company, 100, 1);
+            City cityA = getClosestCity(firstCoordinate.x, firstCoordinate.y);
+            City cityB = getClosestCity(e.getX(), e.getY());
+            if (cityA != null & cityB != null & cityA != cityB) {
+                Route route = businessController.createRoute(cityA, cityB, aircraft);
+                networkController.addRoute(network, route, true);
+                desktopPanel.log("Actual Estrada Coeff = " + matrixController.calculateEstradaCoeff(network));
+            }
+        }
+        repaint();
+    }
     @Override
     public void mouseEntered( MouseEvent e ) {}
     @Override
