@@ -33,6 +33,7 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
     private DesktopFrame desktopPanel;
     private Company company;
     private Network network;
+    private Network resultNetwork;
     private Image mapImg;
     
     private Point firstCoordinate;
@@ -77,13 +78,27 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
         cities.forEach((city) -> {
             g2d.fillOval((int)city.getX() - radius, (int)city.getY() - radius, 2 * radius, 2 * radius);
         });
+        
+        Matrix resultMatrix = null;
+        if (resultNetwork != null) {
+            resultMatrix = resultNetwork.getAdjacencyMatrix();
+        }
 
+        double addedValue = 0.0;
         for (int i = 0; i < cities.size(); i++) {
             for (int j = 0; j < cities.size(); j++) {
-                if (matrix.get(i, j) > 0) {
+                double actualValue = matrix.get(i, j);
+                if (resultMatrix != null) {
+                    addedValue = resultMatrix.get(i, j) - actualValue;
+                }
+      
+                if (actualValue > 0 || addedValue > 0) {
                     City cityA = cities.get(i);
                     City cityB = cities.get(j);
                     g2d.setColor(Color.red);
+                    if (addedValue > 0) {
+                        g2d.setColor(Color.green);
+                    }
                     g2d.drawLine((int) cityA.getX(), (int) cityA.getY(), (int) cityB.getX(), (int) cityB.getY());
                 }
             }
@@ -111,6 +126,11 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
         }
         return null;
     }
+    
+    public void drawResult(Network resultNetwork) {
+        this.resultNetwork = resultNetwork;
+        repaint();
+    }
 
     // Unused Mouse Listener Methods
     @Override
@@ -124,13 +144,13 @@ public class DrawPanel extends JPanel implements Runnable, MouseInputListener {
     @Override
     public void mouseReleased( MouseEvent e ) {
         if (desktopPanel.isAddRouteMode()) {
-            Aircraft aircraft = businessController.createAircraft(company, 100, 1);
+            Aircraft aircraft = new Aircraft(100, 1);
             City cityA = getClosestCity(firstCoordinate.x, firstCoordinate.y);
             City cityB = getClosestCity(e.getX(), e.getY());
             if (cityA != null & cityB != null & cityA != cityB) {
                 Route route = businessController.createRoute(cityA, cityB, aircraft);
                 networkController.addRoute(network, route, true);
-                desktopPanel.log("Actual Estrada Coeff = " + matrixController.calculateEstradaCoeff(network));
+                desktopPanel.log("Actual Estrada Coeff = " + String.format("%.2f", matrixController.calculateEstradaCoeff(network)));
             }
         }
         repaint();

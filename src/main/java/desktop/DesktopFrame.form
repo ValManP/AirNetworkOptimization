@@ -31,24 +31,17 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="logPanel" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="logPanel" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="mapPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="addCityToggleButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="addRouteToggleButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="evolutionPanel" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="evolutionPanel" max="32767" attributes="0"/>
+                          <Component id="jPanel1" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,15 +50,12 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="addCityToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="addRouteToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jPanel1" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="evolutionPanel" max="32767" attributes="0"/>
+                      <Component id="evolutionPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="mapPanel" min="-2" max="-2" attributes="0"/>
+                  <Component id="mapPanel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="logPanel" max="32767" attributes="0"/>
@@ -95,7 +85,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="386" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="357" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -119,9 +109,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="evolveButton" max="32767" attributes="0"/>
-                      <Component id="crossoverComboBox" alignment="0" max="32767" attributes="0"/>
+                      <Component id="crossoverComboBox" alignment="0" pref="0" max="32767" attributes="0"/>
                       <Component id="mutatorComboBox" alignment="1" max="32767" attributes="0"/>
-                      <Component id="selectorComboBox" alignment="1" max="32767" attributes="0"/>
+                      <Component id="selectorComboBox" alignment="1" pref="0" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="populationSizeLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
@@ -140,7 +130,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="crossoverComboBox" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="mutatorComboBox" min="-2" max="-2" attributes="0"/>
@@ -158,7 +148,6 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="evolveButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -247,22 +236,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JToggleButton" name="addCityToggleButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Add City Mode"/>
-      </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="addCityToggleButtonItemStateChanged"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JToggleButton" name="addRouteToggleButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Add Route Mode"/>
-      </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="addRouteToggleButtonItemStateChanged"/>
-      </Events>
-    </Component>
     <Container class="javax.swing.JPanel" name="logPanel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -288,7 +261,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="jScrollPane1" pref="138" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="142" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -310,6 +283,113 @@
             </Component>
           </SubComponents>
         </Container>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Data"/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="addCityToggleButton" min="-2" pref="91" max="-2" attributes="0"/>
+                      <Component id="aircraftCapacityLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="aircraftCostLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="15" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="addAircraftButton" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="addRouteToggleButton" max="32767" attributes="0"/>
+                          <Component id="aircraftCapacityTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="aircraftCostTextField" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="addCityToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="addRouteToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="aircraftCapacityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="aircraftCapacityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="aircraftCostTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="aircraftCostLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="addAircraftButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JToggleButton" name="addCityToggleButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="City Mode"/>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="addCityToggleButtonItemStateChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="addRouteToggleButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Route Mode"/>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="addRouteToggleButtonItemStateChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="aircraftCapacityTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="1"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="aircraftCostTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="100"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="aircraftCapacityLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Aircraft capacity:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="aircraftCostLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Aircraft cost:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="addAircraftButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Add Aircraft"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addAircraftButtonMouseClicked"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

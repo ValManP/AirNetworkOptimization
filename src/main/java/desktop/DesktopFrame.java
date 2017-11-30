@@ -1,6 +1,7 @@
 package desktop;
 
 import impl.algorithms.facades.Evolution;
+import impl.algorithms.genetics.controllers.GeneticController;
 import impl.algorithms.genetics.operators.alterer.types.CrossoverTypes;
 import impl.algorithms.genetics.operators.alterer.types.FitnessTypes;
 import impl.algorithms.genetics.operators.alterer.types.MutatorTypes;
@@ -8,19 +9,25 @@ import impl.algorithms.genetics.operators.alterer.types.SelectorTypes;
 import impl.controllers.BusinessController;
 import impl.controllers.MatrixController;
 import impl.controllers.NetworkController;
+import impl.entities.Aircraft;
 import impl.entities.Company;
 import impl.entities.Network;
+import impl.entities.Route;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import org.jenetics.engine.EvolutionResult;
 
 public class DesktopFrame extends javax.swing.JFrame {
     private final static NetworkController networkController = new NetworkController();
     private final static BusinessController businessController = new BusinessController();
+    private final static GeneticController geneticController = new GeneticController();
+    private final static MatrixController matrixController = new MatrixController();
     
     private Network network;
     private Company company;
@@ -28,6 +35,7 @@ public class DesktopFrame extends javax.swing.JFrame {
     private DrawPanel drawPanel;
 
     public DesktopFrame() {
+        this.setBackground(Color.white);
         initComponents();
         initVariables();
         initDrawPanel();
@@ -50,7 +58,8 @@ public class DesktopFrame extends javax.swing.JFrame {
     private void initVariables() {
         network = networkController.createNetwork(0, new ArrayList());
         company = businessController.createCompany();
-        evolution = Evolution.create(network, company, FitnessTypes.RANDOM_WEIGHT_FITNESS).builder();
+        evolution = Evolution.create(network, company, FitnessTypes.CONSTANT_WEIGHT_FITNESS.withFitnessVariable(0.8))
+                .builder();
     }
     
     public synchronized boolean isAddCityMode() {
@@ -84,11 +93,17 @@ public class DesktopFrame extends javax.swing.JFrame {
         generationSizeLabel = new javax.swing.JLabel();
         generationSpinner = new javax.swing.JSpinner();
         evolveButton = new javax.swing.JButton();
-        addCityToggleButton = new javax.swing.JToggleButton();
-        addRouteToggleButton = new javax.swing.JToggleButton();
         logPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         logTextArea = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        addCityToggleButton = new javax.swing.JToggleButton();
+        addRouteToggleButton = new javax.swing.JToggleButton();
+        aircraftCapacityTextField = new javax.swing.JTextField();
+        aircraftCostTextField = new javax.swing.JTextField();
+        aircraftCapacityLabel = new javax.swing.JLabel();
+        aircraftCostLabel = new javax.swing.JLabel();
+        addAircraftButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Air Network Optimization");
@@ -106,7 +121,7 @@ public class DesktopFrame extends javax.swing.JFrame {
         );
         mapPanelLayout.setVerticalGroup(
             mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 386, Short.MAX_VALUE)
+            .addGap(0, 357, Short.MAX_VALUE)
         );
 
         evolutionPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -160,9 +175,9 @@ public class DesktopFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(evolutionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(evolveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(crossoverComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(crossoverComboBox, 0, 0, Short.MAX_VALUE)
                     .addComponent(mutatorComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(selectorComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(selectorComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, evolutionPanelLayout.createSequentialGroup()
                         .addComponent(populationSizeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -176,7 +191,7 @@ public class DesktopFrame extends javax.swing.JFrame {
         evolutionPanelLayout.setVerticalGroup(
             evolutionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(evolutionPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(crossoverComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mutatorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,23 +206,8 @@ public class DesktopFrame extends javax.swing.JFrame {
                     .addComponent(generationSizeLabel)
                     .addComponent(generationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(evolveButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(evolveButton))
         );
-
-        addCityToggleButton.setText("Add City Mode");
-        addCityToggleButton.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                addCityToggleButtonItemStateChanged(evt);
-            }
-        });
-
-        addRouteToggleButton.setText("Add Route Mode");
-        addRouteToggleButton.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                addRouteToggleButtonItemStateChanged(evt);
-            }
-        });
 
         logPanel.setBackground(new java.awt.Color(255, 255, 255));
         logPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Log"));
@@ -228,8 +228,79 @@ public class DesktopFrame extends javax.swing.JFrame {
         logPanelLayout.setVerticalGroup(
             logPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(logPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Data"));
+
+        addCityToggleButton.setText("City Mode");
+        addCityToggleButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                addCityToggleButtonItemStateChanged(evt);
+            }
+        });
+
+        addRouteToggleButton.setText("Route Mode");
+        addRouteToggleButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                addRouteToggleButtonItemStateChanged(evt);
+            }
+        });
+
+        aircraftCapacityTextField.setText("1");
+
+        aircraftCostTextField.setText("100");
+
+        aircraftCapacityLabel.setText("Aircraft capacity:");
+
+        aircraftCostLabel.setText("Aircraft cost:");
+
+        addAircraftButton.setText("Add Aircraft");
+        addAircraftButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addAircraftButtonMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addCityToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aircraftCapacityLabel)
+                    .addComponent(aircraftCostLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(addAircraftButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(addRouteToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(aircraftCapacityTextField)
+                        .addComponent(aircraftCostTextField)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addCityToggleButton)
+                    .addComponent(addRouteToggleButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aircraftCapacityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aircraftCapacityLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aircraftCostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aircraftCostLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addAircraftButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -239,32 +310,25 @@ public class DesktopFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(logPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(logPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addCityToggleButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(addRouteToggleButton))
-                            .addComponent(evolutionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(evolutionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(addCityToggleButton)
-                            .addComponent(addRouteToggleButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(evolutionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(evolutionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mapPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -290,7 +354,13 @@ public class DesktopFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_populationSizeSpinnerInputMethodTextChanged
 
     private void evolveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_evolveButtonActionPerformed
-       log(evolution.buildEngine().evolve((int) generationSpinner.getValue()).toString());
+       EvolutionResult result = evolution.buildEngine().evolve((int) generationSpinner.getValue());
+       List<Route> routes = geneticController.getListOfRoutes(network, company, result.getBestPhenotype().getGenotype().getChromosome());
+       Network updatedNetwork = geneticController.getUpdatedNetwork(network, routes);
+       drawPanel.drawResult(updatedNetwork);
+       double estradaCoefficient = matrixController.calculateEstradaCoeff(updatedNetwork);
+       double cost = matrixController.calculateCost(routes);
+       log("Best result: Estrada Coefficient = " + String.format("%.2f", estradaCoefficient) + ", cost = " + cost);
     }//GEN-LAST:event_evolveButtonActionPerformed
 
     private void addCityToggleButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_addCityToggleButtonItemStateChanged
@@ -300,6 +370,13 @@ public class DesktopFrame extends javax.swing.JFrame {
     private void addRouteToggleButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_addRouteToggleButtonItemStateChanged
        addCityToggleButton.setSelected(false);
     }//GEN-LAST:event_addRouteToggleButtonItemStateChanged
+
+    private void addAircraftButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addAircraftButtonMouseClicked
+        double cost = Double.valueOf(aircraftCostTextField.getText());
+        double capacity = Double.valueOf(aircraftCapacityTextField.getText());
+        businessController.createAircraft(company, cost, capacity);
+        log("Aircraft with cost " + cost + " and capacity " + capacity + " is created");
+    }//GEN-LAST:event_addAircraftButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -337,13 +414,19 @@ public class DesktopFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addAircraftButton;
     private javax.swing.JToggleButton addCityToggleButton;
     private javax.swing.JToggleButton addRouteToggleButton;
+    private javax.swing.JLabel aircraftCapacityLabel;
+    private javax.swing.JTextField aircraftCapacityTextField;
+    private javax.swing.JLabel aircraftCostLabel;
+    private javax.swing.JTextField aircraftCostTextField;
     private javax.swing.JComboBox<String> crossoverComboBox;
     private javax.swing.JPanel evolutionPanel;
     private javax.swing.JButton evolveButton;
     private javax.swing.JLabel generationSizeLabel;
     private javax.swing.JSpinner generationSpinner;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel logPanel;
     private javax.swing.JTextArea logTextArea;

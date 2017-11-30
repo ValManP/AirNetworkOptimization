@@ -21,6 +21,12 @@ public class NetworkController {
         }
         return new Network(size, cityList);
     }
+    
+    public Network createNetwork(Network network) {
+        Network newNetwork = new Network(network.getSize(), network.getCities());
+        newNetwork.setAdjacencyMatrix(new Matrix(network.getAdjacencyMatrix().getArrayCopy()));
+        return newNetwork;
+    }
 
     public void addCity(Network network, City city) {
         int size = network.getSize();
