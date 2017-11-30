@@ -32,7 +32,7 @@ public class GeneticController {
     }
 
     public Network getUpdatedNetwork(Network network, List<Route> routes) {
-        Network updatedNetwork = networkController.createNetwork(network.getSize(), network.getCities());
+        Network updatedNetwork = networkController.createNetwork(network);
         networkController.addRoutes(updatedNetwork, routes);
         return updatedNetwork;
     }

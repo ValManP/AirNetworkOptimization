@@ -37,7 +37,7 @@ public abstract class GeneticFitness {
         double estradaCoefficient = matrixController.calculateEstradaCoeff(updatedNetwork);
         double cost = normalizeCost(matrixController.calculateCost(routes));
 
-        return weight1 * estradaCoefficient + weight2 * cost;
+        return (-1) * weight1 * estradaCoefficient - weight2 * cost;
     }
 
     protected void calculateWeights() {
