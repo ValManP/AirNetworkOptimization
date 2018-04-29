@@ -67,7 +67,7 @@ public class GeneticController {
 
             if (allele.isUsed()) {
                 Aircraft aircraft = company.getAircraft().get(index);
-                LOGGER.debug("size = " + network.getSize() + " pos = " + allele.getPosition());
+                //LOGGER.debug("size = " + network.getSize() + " pos = " + allele.getPosition());
                 City cityA = network.getCities().get(findRow(allele.getPosition(), network.getSize()));
                 City cityB = network.getCities().get(findCol(allele.getPosition(), network.getSize()));
 

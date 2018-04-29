@@ -8,7 +8,19 @@ public enum AirportCode {
     MOSCOW("MOW"),
     PARIS("PAR"),
     ROME("ROM"),
-    STOCKHOLM("STO");
+    STOCKHOLM("STO"),
+    DUBAI("DXB"),
+    FRANKFURT("FRA"),
+    AMSTERDAM("AMS"),
+    MUNICH("MUC"),
+    BARCELONA("BCN"),
+    MINSK("MSQ"),
+    WARSAW("WAW"),
+    ANKARA("ESB"),
+    GENEVA("GVA"),
+    MADRID("MAD"),
+    SOCHI("AER"),
+    SAINT_PETERSBURG("LED");
 
     private String value;
 

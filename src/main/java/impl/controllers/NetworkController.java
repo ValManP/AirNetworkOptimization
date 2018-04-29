@@ -44,9 +44,11 @@ public class NetworkController {
         int indexB = cityList.indexOf(route.getCityB());
         double power = route.getAircraft().getPower();
 
-        network.getAdjacencyMatrix().set(indexA, indexB, power);
+        double currentValue = network.getAdjacencyMatrix().get(indexA, indexB);
+
+        network.getAdjacencyMatrix().set(indexA, indexB, currentValue + power);
         if (isDuplex) {
-            network.getAdjacencyMatrix().set(indexB, indexA, power);
+            network.getAdjacencyMatrix().set(indexB, indexA, currentValue + power);
         }
     }
 
