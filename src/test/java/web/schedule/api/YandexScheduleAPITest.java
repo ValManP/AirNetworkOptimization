@@ -10,6 +10,7 @@ import impl.entities.Company;
 import impl.entities.Network;
 import org.jenetics.engine.EvolutionResult;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import web.schedule.api.constants.AirportCode;
 
@@ -25,6 +26,7 @@ public class YandexScheduleAPITest {
     private Company company;
 
     @Test
+    @Ignore
     public void testGetCountOfFlight() throws ParseException {
         YandexScheduleAPI api = new YandexScheduleAPI();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -38,6 +40,7 @@ public class YandexScheduleAPITest {
     }
 
     @Test
+    @Ignore
     public void largeExperiment() throws ParseException {
         network = createNetwork();
 
