@@ -5,4 +5,4 @@
 
 ## Code Coverage
 
-![](https://codecov.io/gh/ValManP/AirNetworkOptimization/graphs/sunburst.svg)
+![](https://codecov.io/gh/ValManP/AirNetworkOptimization/branch/master/graphs/sunburst.svg)
